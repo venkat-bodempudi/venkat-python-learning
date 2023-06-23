@@ -1,33 +1,45 @@
-from turtle import Turtle,Screen
-import time
-#set up screen
-snakeScreen=Screen()
-snakeScreen.screensize(500,500)
-snakeScreen.bgcolor("black")
-snakeScreen.title("My Snake Game")
-snakeScreen.tracer(0)
-snakes=[]
+from turtle import Turtle
 
-initial_snake_positions=[(0,0),(-20,0),(-40,0)]
+INITIAL_SNAKE_POSITIONS=[(0,0),(-20,0),(-40,0)]
+MOVE_SNAKE_EXTENT=20
+UP=90
+DOWN=270
+LEFT=180
+RIGHT=0
 
-for snake_position in initial_snake_positions:
-    snake=Turtle("square")
-    snake.color("White")
-    snake.penup()
-    snake.goto(snake_position)
-    snakes.append(snake)
- 
-is_game_completed=True
-while is_game_completed:
-    snakeScreen.update()  
-    time.sleep(0.1)
 
-    for snake_index in range(len(snakes)-1,0,-1):
-        new_x=snakes[snake_index-1].xcor()
-        new_y=snakes[snake_index-1].ycor()
-        snakes[snake_index].goto(new_x,new_y)
-    snakes[0].forward(20)
+
+
+class Snake:
+
+    def __init__(self) -> None:
+        self.snakes=[]
+        self.CreateSnake()
+        self.head=self.snakes[0]
     
+    def CreateSnake(self):
+        for snake_position in INITIAL_SNAKE_POSITIONS:
+            snake=Turtle("square")
+            snake.color("White")
+            snake.penup()
+            snake.goto(snake_position)
+            self.snakes.append(snake)
 
-
-snakeScreen.exitonclick()
+    def MoveSnake(self):
+        for snake_index in range(len(self.snakes)-1,0,-1):
+            new_x=self.snakes[snake_index-1].xcor()
+            new_y=self.snakes[snake_index-1].ycor()
+            self.snakes[snake_index].goto(new_x,new_y)
+        self.head.forward(MOVE_SNAKE_EXTENT)
+    def Up(self):
+        if self.head.heading() != DOWN:
+            self.head.setheading(UP)
+    def Down(self):
+        if self.head.heading() != UP:
+            self.head.setheading(DOWN)
+    def Left(self):
+        if self.head.heading() != RIGHT:
+            self.head.setheading(LEFT)
+    def Right(self):
+        if self.head.heading() != LEFT:
+            self.head.setheading(RIGHT)
